@@ -1,0 +1,56 @@
+<span style="    
+font-family: math;
+font-size: xx-large;
+font-weight: 900;
+margin-left: -85%;">Repositories</span>
+
+
+<div  style="padding: 40px;">
+
+  <input nz-input id="search-bar" type="text"  placeholder="Search Documents"/>
+<nz-table #sortTable [nzData]="listOfData" >
+  <thead>
+    <tr>
+      <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+        {{ column.title }}
+      </th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of sortTable.data">
+      <td>{{ data.id }}</td>
+      <td>{{ data.name }}</td>
+      <td>{{ data.uploadedBy }}</td>
+      <td>{{ data.uploadedDate | date: 'dd/MM/yyyy hh:ss a'}}</td>
+      <td>
+        <a href=""><span nz-icon nzType="cloud-download" nzTheme="outline"></span></a>
+        <span style="padding-right:10px"></span>
+        <a href=""><span nz-icon nzType="upload" nzTheme="outline"></span></a>
+      </td>
+    </tr>
+    <tr *ngFor="let data of sortTable.data">
+      <td>{{ data.id }}</td>
+      <td>{{ data.name }}</td>
+      <td>{{ data.uploadedBy }}</td>
+      <td>{{ data.uploadedDate | date: 'dd/MM/yyyy hh:ss a'}}</td>
+      <td>
+        <a href=""><span nz-icon nzType="cloud-download" nzTheme="outline"></span></a>
+        <span style="padding-right:10px"></span>
+        <a href=""><span nz-icon nzType="upload" nzTheme="outline"></span></a>
+      </td>
+    </tr>
+    <tr *ngFor="let data of sortTable.data">
+      <td>{{ data.id }}</td>
+      <td>{{ data.name }}</td>
+      <td>{{ data.uploadedBy }}</td>
+      <td>{{ data.uploadedDate| date: 'dd/MM/yyyy hh:ss a'}}</td>
+      <td>
+        <a href=""><span nz-icon nzType="cloud-download" nzTheme="outline"></span></a>
+        <span style="padding-right:10px"></span>
+        <a href=""><span nz-icon nzType="upload" nzTheme="outline"></span></a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+</div>
