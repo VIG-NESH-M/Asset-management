@@ -7,17 +7,17 @@ import { CreateTicketComponent } from './components/create-ticket/create-ticket.
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 import { FacilitiesComponent } from './components/facilities/facilities.component';
 import { HomeComponent } from './components/home/home.component';
-import { HlpComponent } from './components/hlp/hlp.component';
 import { LoginComponent } from './components/login/login.component';
 import { RaiseRequestComponent } from './components/raise-request/raise-request.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { TicketsComponent } from './components/tickets/tickets.component';
 import { UserRegisterComponent } from './components/user-register/user-register.component';
 import { KnowledgeRepoComponent } from './components/knowledge-repo/knowledge-repo.component';
+import { CreateRepoComponent } from './components/create-repo/create-repo.component';
+
 
 const routes: Routes = [
   {path:'home',component:HomeComponent},
-  {path:'hlp',component:HlpComponent},
   {path:'assets/create',component:AssetCreateComponent},
   {path:'assets',component:AssetListComponent},
   {path:'tickets',component:TicketsComponent},
@@ -31,6 +31,7 @@ const routes: Routes = [
   {path:'users', component: EmployeeListComponent},
   {path:'raise-issue', component: RaiseRequestComponent},
   {path:'knowledge-repos', component: KnowledgeRepoComponent},
+  {path:'create-repo', component: CreateRepoComponent},
   {path:'reports', component: ReportsComponent},
   {path:'',redirectTo:'/home',pathMatch:'full'},
   {path:'**', redirectTo:'/'}

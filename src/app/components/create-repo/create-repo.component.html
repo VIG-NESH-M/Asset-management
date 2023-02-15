@@ -1,0 +1,25 @@
+<form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please enter the AssetName!">
+      <nz-input-group nzPrefixIcon="user">
+        <input type="text" nz-input formControlName="userName" placeholder="Assetname" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+<nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
+    <button nz-button>
+      <span nz-icon nzType="upload"></span>
+      Select File
+    </button>
+  </nz-upload>
+  <button
+    nz-button
+    [nzType]="'primary'"
+    [nzLoading]="uploading"
+    (click)="handleUpload()"
+    [disabled]="fileList.length === 0"
+    style="margin-top: 16px"
+  >
+    {{ uploading ? 'Uploading' : 'Upload' }}
+  </button>
+</form>

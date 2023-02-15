@@ -23,7 +23,6 @@ import { UserRegisterComponent } from './components/user-register/user-register.
 import { CreateTicketComponent } from './components/create-ticket/create-ticket.component';
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 import { HomeComponent } from './components/home/home.component';
-import { HlpComponent } from './components/hlp/hlp.component';
 import { NavigatorComponent } from './components/navigator/navigator.component';
 import { TicketsComponent } from './components/tickets/tickets.component';
 import { FacilitiesComponent } from './components/facilities/facilities.component';
@@ -31,7 +30,8 @@ import { CreateFacilityComponent } from './components/create-facility/create-fac
 import { RaiseRequestComponent } from './components/raise-request/raise-request.component';
 import { KnowledgeRepoComponent } from './components/knowledge-repo/knowledge-repo.component';
 import { UpdateTicketStatusComponent } from './components/update-ticket-status/update-ticket-status.component';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { CreateRepoComponent } from './components/create-repo/create-repo.component';
+
 
 registerLocaleData(en);
 
@@ -45,14 +45,14 @@ registerLocaleData(en);
     UserRegisterComponent,
     CreateTicketComponent,
     EmployeeListComponent,
-    HomeComponent,HlpComponent ,
+    HomeComponent,
     NavigatorComponent,
     TicketsComponent,
     FacilitiesComponent,
     CreateFacilityComponent,
     RaiseRequestComponent,
     KnowledgeRepoComponent,
-    UpdateTicketStatusComponent
+    UpdateTicketStatusComponent,CreateRepoComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,7 +65,7 @@ registerLocaleData(en);
     NzGridModule,
     NzMenuModule,
     NzBreadCrumbModule,
-    DemoNgZorroAntdModule,MatExpansionModule,
+    DemoNgZorroAntdModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
