@@ -123,11 +123,19 @@ export class RestapiService {
     return this.httpClient.post<ApiResponse>(`${this.baseUrl}/tickets/mail`, formData);
   }
 
-  public createRepo(assetName : String, file : File) {
+  public createkRepo(asset_name : String, file : File, userId  :any) {
     var formData = new FormData();
-    formData.append("dto", JSON.stringify(assetName));
+    formData.append("dto", JSON.stringify(asset_name));
     formData.append("file", file);
-    return this.httpClient.post<ApiResponse>(`${this.baseUrl}/knowledgerepo/upload`, formData);
+    return this.httpClient.post<ApiResponse>(`${this.baseUrl}/knowledgerepo/uploadfile/${userId}`, formData);
+  }
+
+  public getAllRepo() {
+    return this.httpClient.get<ApiResponse>(`${this.baseUrl}/knowledgerepo/list`);
+  }
+
+  public deleteRepo(id: Number) {
+    return this.httpClient.delete<ApiResponse>(`${this.baseUrl}/knowledgerepo/${id}`);
   }
 
   public getAllTickets() {

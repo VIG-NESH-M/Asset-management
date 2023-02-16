@@ -1,11 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
+import { Repo } from 'src/app/models/Repo';
+import { RestapiService } from 'src/app/restapi.service';
+import { TokenService } from 'src/app/token.service';
 
-interface DataItem {
-  id: number;
+interface ColumnItem {
   name: string;
-  asset: string;
-  uploadedBy: string;
-  uploadedDate: number;
+  sortOrder: NzTableSortOrder | null;
+  sortFn: NzTableSortFn<Repo> | null;
+  sortDirections: NzTableSortOrder[];
 }
 
 @Component({
@@ -13,87 +18,115 @@ interface DataItem {
   templateUrl: './knowledge-repo.component.html',
   styleUrls: ['./knowledge-repo.component.css'],
 })
-export class KnowledgeRepoComponent {
-  listOfColumn = [
-    {
-      title: 'Document Id',
-      compare: (a: DataItem, b: DataItem) => a.id - b.id,
-      priority: false,
-    },
-    {
-      title: 'Document Name',
-      compare: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
-      priority: false,
-    },
-    {
-      title: 'Asset Name',
-      compare: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
-      priority: false,
-    },
-    {
-      title: 'Uploaded By Id',
-      compare: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
-      priority: false,
-    },
-    {
-      title: 'Uploaded Date',
-      compare: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
-      priority: false,
-    },
-  ];
-  listOfData: DataItem[] = [
-    {
-      id: 10290,
-      name: 'Doument 001',
-      asset: '1 test',
-      uploadedBy: 'Admin 1',
-      uploadedDate: 1675142322833,
-    },
-    {
-      id: 10290,
-      name: 'Doument 002',
-      asset: '2 test',
-      uploadedBy: 'Admin 9',
-      uploadedDate: 1675142322833,
-    },
-    {
-      id: 10290,
-      name: 'Doument 005',
-      asset: '3 test',
-      uploadedBy: 'Admin 3',
-      uploadedDate: 1675142322833,
-    },
-    {
-      id: 10290,
-      name: 'Doument 009',
-      asset: '4 test',
-      uploadedBy: 'Admin 4',
-      uploadedDate: 1675142322833,
-    },
-  ];
+export class KnowledgeRepoComponent implements OnInit {
+
+  userData:any;
   
-  isVisible = false;
-  isConfirmLoading = false;
+  constructor(private restApiService: RestapiService, private notification: NzMessageService, private router: Router, private tokenService: TokenService, private restServices : RestapiService) {
 
-  constructor() {}
+  }
+  ngOnInit(): void {
+    if (this.tokenService.getToken() === null) {
+      this.router.navigateByUrl("/signin");
+      window.location.pathname = "/signin"
+      
+    } 
+    else {
+     
+        this.getAllRepo();
+       }
 
-  showCreate(): void {
+  }
+
+
+  repoColumns: ColumnItem[] = [
+    {
+      name: 'Document Id',
+      sortOrder: null,
+      sortFn: (a: Repo, b: Repo) => a.id - b.id,
+      sortDirections: ['ascend', 'descend', null]
+    },
+    {
+      name: 'Document Name',
+      sortOrder: 'descend',
+      sortFn: (a: Repo, b: Repo) => a.name.localeCompare(b.name),
+      sortDirections: ['ascend', 'descend', null]
+    },
+    {
+      name: 'Asset Name',
+      sortOrder: 'descend',
+      sortFn: (a: Repo, b: Repo) => a.asset_name.localeCompare(b.asset_name),
+      sortDirections: ['ascend', 'descend', null],
+    },
+    {
+      name: 'Uploaded by',
+      sortOrder: 'descend',
+      sortDirections: ['ascend', 'descend', null],
+      sortFn: (a: Repo, b: Repo) => a.user.id - b.user.id,
+    },
+    {
+      name: 'Uploaded Time',
+      sortOrder: 'descend',
+      sortFn: (a: Repo, b: Repo) => a.uploaded_time - b.uploaded_time,
+      sortDirections: ['ascend', 'descend', null]
+    }
+  ];
+
+
+  repoList: Repo[] = [];
+  searchString: any;
+  searchResults: Repo[] = []
+
+  getAllRepo() {
+    this.restApiService.getAllRepo().subscribe(
+      data => {
+        console.log("Success", data)
+        this.repoList = data.responseData;
+        this.searchResults = this.repoList;
+        this.notification.success("Repo Details is Found!")
+      },
+      error => {
+        console.log("Error occurred", error);
+        this.notification.error("Error getting the repo Details!")
+      }
+    );
+  }
+
+  filterData(event: any) {
+    function ispositive(element: Repo, index: any, array: any) {
+      return (element.name.toLocaleLowerCase().includes(event.target.value.toLocaleLowerCase()) ||
+        element.asset_name.toLocaleLowerCase().includes(event.target.value.toLocaleLowerCase()) )
+    }
+    this.searchResults = this.repoList.filter(ispositive);
+  }
+
+  isVisible: boolean = false;
+  isConfirmLoading=false
+
+  showCreate() {
     this.isVisible = true;
   }
-
-  // handleOk(): void {
-  //   this.isConfirmLoading = true;
-  //   setTimeout(() => {
-  //     this.isVisible = false;
-  //     this.isConfirmLoading = false;
-  //   }, 1000);
-  // }
-  handleOk(): void {
-    console.log('click ok');
+  handleCancel() {
     this.isVisible = false;
   }
 
-  handleCancel(): void {
+  handleOk() {
     this.isVisible = false;
+  }
+
+  handleDelete(id : any){
+    this.deleteRepo(id);
+  }
+
+  deleteRepo(id: any){
+    this.restServices.deleteRepo(id).subscribe(
+      data =>{
+        this.notification.success("Repo Deleted Successfully.!")
+      },
+      error=>{
+        console.log("Error Occured", error);
+        this.notification.error("Error Deleting Repo!")
+      }
+    )
   }
 }

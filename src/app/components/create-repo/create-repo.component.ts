@@ -18,25 +18,27 @@ export class CreateRepoComponent {
   @Output()
   close: EventEmitter<void> = new EventEmitter<void>();
 
-  @Input()
-  assetList : any;
-  
   form!: UntypedFormGroup;
 
   file: File | null = null;
 
   userData: any;
 
+  userId : any
+
+
   constructor(private formBuilder: UntypedFormBuilder, private notification: NzMessageService,
     private restApiService: RestapiService, private router: Router, private tokenService: TokenService) {
       this.form = this.formBuilder.group({
-        assetName: ['', [Validators.required]]
+        asset_name: ['', [Validators.required]]
       })
     }
 
   submitForm(): void {
     if (this.form.valid) {
       console.log('submit', this.form.value);
+      this.handleCreation(this.form.value)
+
     } else {
       Object.values(this.form.controls).forEach(control => {
         if (control.invalid) {
@@ -56,31 +58,32 @@ export class CreateRepoComponent {
 
   }
 
+  
 
-  handleTicketCreation() {
-    var formData = this.form.value;
-    var assetName = formData.assetName;
+  handleCreation(assetName : String) {
+    var asset_name = assetName;
+    this.userId = this.userData.userId 
     if (this.file == null) {
       console.log("Please Attach Document");
     } else {
-      console.log("With Attachment", assetName, this.file);
-    this.createRepo(assetName, this.file)
+      console.log("With Attachment", asset_name, this.file);
+    this.createRepo(asset_name,  this.file, this.userId)
     }
     
     }
 
-    createRepo(assetName : String, file : File)
+    createRepo(asset_name : String, file : File, userId: any)
     {
-      this.restApiService.createRepo(assetName,file).subscribe(
+      this.restApiService.createkRepo(asset_name, file, userId).subscribe(
         data => {
           console.log("Success", data)
-          this.notification.success("Ticket created Successfully.")
+          this.notification.success("Repo created Successfully.")
           this.form.reset();
           this.handleClose()
         },
         error => {
           console.log("Error occcured", error)
-          this.notification.error("Ticket creation Failed")
+          this.notification.error("Repo creation Failed")
         }
       );
     }
@@ -100,17 +103,17 @@ export class CreateRepoComponent {
     console.log(this.file);
   }
 
-  getAssets() {
-    this.restApiService.getAssets().subscribe(
-      data => {
-        this.assetList = data.responseData;
-        console.log(this.assetList)
-      },
-      error => {
-        console.log("Error Occured", error);
-        this.notification.error("Error Fetching Asset List!")
-      }
+  // getAssets() {
+  //   this.restApiService.getAssets().subscribe(
+  //     data => {
+  //       this.assetList = data.responseData;
+  //       console.log(this.assetList)
+  //     },
+  //     error => {
+  //       console.log("Error Occured", error);
+  //       this.notification.error("Error Fetching Asset List!")
+  //     }
 
-    )
-  }
+  //   )
+  // }
 }

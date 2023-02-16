@@ -36,60 +36,30 @@
     </ng-template>
   </nz-modal>
 
-  <nz-table #sortTable [nzData]="listOfData">
+  <nz-table #filterTable [nzData]="searchResults">
     <thead>
       <tr>
         <th
-          *ngFor="let column of listOfColumn"
-          [nzSortFn]="column.compare"
-          [nzSortPriority]="column.priority"
+        *ngFor="let column of repoColumns" [nzSortOrder]="column.sortOrder" [nzSortFn]="column.sortFn"
+        [nzSortDirections]="column.sortDirections"
         >
-          {{ column.title }}
+          {{ column.name }}
         </th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of sortTable.data">
+      <tr *ngFor="let data of filterTable.data">
         <td>{{ data.id }}</td>
         <td>{{ data.name }}</td>
-        <td>{{ data.asset }}</td>
-        <td>{{ data.uploadedBy }}</td>
-        <td>{{ data.uploadedDate | date : "dd/MM/yyyy hh:ss a" }}</td>
+        <td>{{ data.asset_name }}</td>
+        <td>{{ data.user.name }}</td>
+        <td>{{ data.uploaded_time | date : "dd/MM/yyyy hh:ss a" }}</td>
         <td>
-          <a href=""
-            ><span nz-icon nzType="download" nzTheme="outline"></span
-          ></a>
-          <span style="padding-right: 10px"></span>
-          <a href=""><span nz-icon nzType="delete" nzTheme="outline"></span></a>
-        </td>
-      </tr>
-      <tr *ngFor="let data of sortTable.data">
-        <td>{{ data.id }}</td>
-        <td>{{ data.name }}</td>
-        <td>{{ data.asset }}</td>
-        <td>{{ data.uploadedBy }}</td>
-        <td>{{ data.uploadedDate | date : "dd/MM/yyyy hh:ss a" }}</td>
-        <td>
-          <a href=""
-            ><span nz-icon nzType="download" nzTheme="outline"></span
-          ></a>
-          <span style="padding-right: 10px"></span>
-          <a href=""><span nz-icon nzType="delete" nzTheme="outline"></span></a>
-        </td>
-      </tr>
-      <tr *ngFor="let data of sortTable.data">
-        <td>{{ data.id }}</td>
-        <td>{{ data.name }}</td>
-        <td>{{ data.asset }}</td>
-        <td>{{ data.uploadedBy }}</td>
-        <td>{{ data.uploadedDate | date : "dd/MM/yyyy hh:ss a" }}</td>
-        <td>
-          <a href=""
-            ><span nz-icon nzType="download" nzTheme="outline"></span
-          ></a>
-          <span style="padding-right: 10px"></span>
-          <a href=""><span nz-icon nzType="delete" nzTheme="outline"></span></a>
+          <button id="asset-delete-button" nz-button nz-popconfirm nzPopconfirmTitle="Sure to Delete?"
+          (nzOnConfirm)="handleDelete(data.id)" nz-tooltip [nzTooltipTitle]="'Delete Repo'" [nzTooltipColor]="'red'">
+          <span nz-icon nzType="delete" nzTheme="twotone" [nzTwotoneColor]="'red'"></span>
+        </button>
         </td>
       </tr>
     </tbody>
