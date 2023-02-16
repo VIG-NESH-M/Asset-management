@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.1.0",
-    "@angular/cli": "~15.1.0",
+    "@angular/cli": "^15.1.6",
     "@angular/compiler-cli": "^15.1.0",
     "@types/d3-zoom": "^3.0.2",
     "@types/jasmine": "~4.3.0",

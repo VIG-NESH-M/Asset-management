@@ -11,6 +11,7 @@ import { LoginRequest } from './models/LoginRequest';
 import { Ticket } from './models/Ticket';
 import { UpdateStatusReq } from './models/UpdateStatusReq';
 import { TokenService } from './token.service';
+import { Repo } from './models/Repo'
 // import { TicketRe } from './models/TicketResp';
 
 const reqOptions = {
@@ -120,6 +121,13 @@ export class RestapiService {
     formData.append("ticketBody", JSON.stringify(ticket));
     formData.append("file", file);
     return this.httpClient.post<ApiResponse>(`${this.baseUrl}/tickets/mail`, formData);
+  }
+
+  public createRepo(assetName : String, file : File) {
+    var formData = new FormData();
+    formData.append("dto", JSON.stringify(assetName));
+    formData.append("file", file);
+    return this.httpClient.post<ApiResponse>(`${this.baseUrl}/knowledgerepo/upload`, formData);
   }
 
   public getAllTickets() {
